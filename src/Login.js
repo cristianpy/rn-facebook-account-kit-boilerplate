@@ -1,17 +1,19 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import {
   View,
   StyleSheet,
   TextInput,
   Button,
-} from 'react-native'
+} from 'react-native';
+import { LoginButton, AccessToken, LoginManager } from 'react-native-fbsdk';
 
 import { goHome } from './navigation'
 import Service from './Service';
 
 export default class Login extends Component {
   state = {
-    username: '', password: ''
+    username: '', 
+    password: ''
   }
   onChangeText = (key, value) => {
     this.setState({ [key]: value })
@@ -26,6 +28,24 @@ export default class Login extends Component {
       .catch((error) => {
         console.log(error);
       });
+  }
+  loginWithFacebook = () => {
+    LoginManager.logInWithReadPermissions(["public_profile"]).then(
+      function(result) {
+        if (result.isCancelled) {
+          console.log("Login cancelled");
+        } else {
+          console.log(
+            "Login success with permissions: " +
+              result.grantedPermissions.toString()
+          );
+          goHome();
+        }
+      },
+      function(error) {
+        console.log("Login fail with error: " + error);
+      }
+    );
   }
   render() {
     return (
@@ -50,6 +70,25 @@ export default class Login extends Component {
           title='Entrar'
           onPress={this.signIn}
         />
+        <LoginButton
+          onLoginFinished={
+            (error, result) => {
+              if (error) {
+                console.log("login has error: " + result.error);
+              } else if (result.isCancelled) {
+                console.log("login is cancelled.");
+              } else {
+                AccessToken.getCurrentAccessToken().then(
+                  (data) => {
+                    console.log(data.accessToken.toString())
+                  }
+                );
+                goHome();
+              }
+            }
+          }
+          onLogoutFinished={() => console.log("logout.")}/>
+          <Button onPress={this.loginWithFacebook} title="Face"></Button>
       </View>
     )
   }
