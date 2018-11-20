@@ -10,6 +10,8 @@ import {Navigation} from 'react-native-navigation';
 import Service from './Service';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { LoginManager } from 'react-native-fbsdk';
+
 const myIcon = (<Icon name="rocket" size={30} color="#900" />);
 
 export default class Home extends Component {
@@ -22,6 +24,7 @@ export default class Home extends Component {
       .catch((error) => {
         console.log(error);
       });
+    LoginManager.logOut();
   }
   render() {
     console.log('props; ', this.props)

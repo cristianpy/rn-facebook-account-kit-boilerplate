@@ -69,6 +69,7 @@ export default class Login extends Component {
         <Button
           title='Entrar'
           onPress={this.signIn}
+          style={{marginBottom: 10}}
         />
         <LoginButton
           onLoginFinished={
@@ -88,7 +89,11 @@ export default class Login extends Component {
             }
           }
           onLogoutFinished={() => console.log("logout.")}/>
-          <Button onPress={this.loginWithFacebook} title="Face"></Button>
+          <Button 
+            style={{marginBottom: 10, marginTop: 10}}
+            onPress={this.loginWithFacebook} 
+            title="Facebook Boton Personalizado">
+          </Button>
       </View>
     )
   }
